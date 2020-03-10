@@ -31,6 +31,10 @@ class NewsService:
     def delete_by_id(self, id):
         self.__news_dao.delete_by_id(id)
 
+    # 添加新闻
+    def insert(self, title, editor_id, type_id, content_id, is_top):
+        self.__news_dao.insert(title, editor_id, type_id, content_id, is_top)
+
 
 
 

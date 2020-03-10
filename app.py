@@ -3,6 +3,7 @@ from getpass import getpass
 from service.user_service import UserService
 from service.news_service import NewsService
 from service.role_service import RoleService
+from service.type_serviec import TypeService
 import os
 import sys
 import time
@@ -10,6 +11,7 @@ import time
 __user_service = UserService()
 __news_service = NewsService()
 __role_service = RoleService()
+__type_service = TypeService()
 
 while True:
     os.system("clear")
@@ -30,7 +32,32 @@ while True:
             while True:
                 os.system("clear")
                 if role == "新闻编辑":
-                    print("test")
+                    print(Fore.LIGHTGREEN_EX, "\n\t1.发表新闻")
+                    print(Fore.LIGHTGREEN_EX, "\n\t2.编辑新闻")
+                    print(Fore.LIGHTRED_EX, "\n\tback.退出登录")
+                    print(Fore.LIGHTGREEN_EX, "\n\texit.退出系统")
+                    print(Style.RESET_ALL)
+                    opt = input("\n\t输入操作编号:")
+                    if opt=="1":
+                        os.system("clear")
+                        title = input("\n\t新闻标题:")
+                        userid = __user_service.search_userid(username)
+                        result = __type_service.search_list()
+                        for index in range(len(result)):
+                            one = result[index]
+                            print(Fore.LIGHTBLUE_EX, "\n\t%d.%s" % (index + 1, one[1]))
+                        print(Style.RESET_ALL)
+                        opt = input("\n\t类型编号:")
+                        type_id = result[int(opt) - 1][0]
+                        # TODO 新闻正文内容
+                        content_id = 100
+                        is_top = input("置顶级别(0-5):")
+                        is_commite = input("\n\t是否提交(Y/N):")
+                        if is_commite == "Y" or is_commite == "y":
+                            __news_service.insert(title, userid, type_id, content_id, is_top)
+                            print("\n\t保存成功(3s自动返回)")
+                            time.sleep(3)
+
                 elif role == "管理员":
                     print(Fore.LIGHTGREEN_EX, "\n\t1.新闻管理")
                     print(Fore.LIGHTGREEN_EX, "\n\t2.用户管理")
@@ -229,8 +256,8 @@ while True:
                                 break
                             elif opt == "exit":
                                 sys.exit(0)
-                            else:
-                                print("\n\t登录失败(3s自动返回)")
-                                time.sleep(3)
+        else:
+            print("\n\t登录失败(3s自动返回)")
+            time.sleep(3)
     elif opt == "2":
         sys.exit(0)
