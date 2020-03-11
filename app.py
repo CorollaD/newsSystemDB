@@ -103,8 +103,21 @@ while True:
                                         page += 1
                                     elif int(opt) >= 1 and int(opt) <= 10:
                                         news_id = result[int(opt) - 1][0]
-                                        __news_service.update_unreview_news(
-                                            news_id)
+                                        __news_service.update_unreview_news(news_id)
+                                        result = __news_service.search_cache(news_id)
+                                        title = result[0]
+                                        username = result[1]
+                                        type = result[2]
+                                        content_id = result[3]
+                                        #TODO 查找新闻正文
+                                        content = "100"
+                                        is_top = result[4]
+                                        create_time = str(result[5])
+                                        __news_service.cache_news(news_id, title, username, type,
+                                                                  content,is_top, create_time)
+
+
+
                             elif opt == "2":
                                 page = 1
                                 while True:
